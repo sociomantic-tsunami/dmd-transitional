@@ -16,6 +16,6 @@ ARGS = [
     '{0}=/usr/bin/{1}'.format(compiler, VAR.name),
     '{0}=/usr/lib/libdruntime.a'.format(runtime),
     '{0}=/usr/lib/libdruntime-dbg.a'.format(runtimedbg),
-    'druntime/import/=/usr/include/d2/dmd-transitional/',
+    'druntime/import/release/=/usr/include/d2/dmd-transitional/',
     'dmd.conf=/etc/dmd-transitional.conf',
 ]
