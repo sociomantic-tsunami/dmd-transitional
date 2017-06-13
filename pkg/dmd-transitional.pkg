@@ -7,7 +7,7 @@ OPTS = dict(
     url = 'https://github.com/sociomantic/dlang',
     description = 'Transitional dmd/druntime to help D1/D2 migration',
     category = 'devel',
-    maintainer = 'Core Team <core-team@sociomantic.com>',
+    maintainer = 'Sociomantic Tsunami <tsunami@sociomantic.com>',
     vendor = 'Sociomantic Labs GmbH',
     depends = FUN.autodeps(compiler),
 )
