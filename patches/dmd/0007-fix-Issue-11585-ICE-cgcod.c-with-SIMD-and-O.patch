@@ -1,7 +1,7 @@
-From a94f59965d2450b74866df03d8d06acb4b0b6040 Mon Sep 17 00:00:00 2001
+From e1e194cbd572771c6e43a40447ed673f7076785e Mon Sep 17 00:00:00 2001
 From: Walter Bright <walter@walterbright.com>
 Date: Mon, 25 Apr 2016 01:02:49 -0700
-Subject: [PATCH 14/21] fix Issue 11585 - ICE(cgcod.c) with SIMD and -O
+Subject: [PATCH 07/14] fix Issue 11585 - ICE(cgcod.c) with SIMD and -O
 
 ---
  src/backend/cgcod.c     |  4 ++--
@@ -10,10 +10,10 @@ Subject: [PATCH 14/21] fix Issue 11585 - ICE(cgcod.c) with SIMD and -O
  3 files changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/src/backend/cgcod.c b/src/backend/cgcod.c
-index 69ecb4cfc..667437960 100644
+index 7a311d7d8..2e6329db7 100644
 --- a/src/backend/cgcod.c
 +++ b/src/backend/cgcod.c
-@@ -2151,7 +2151,7 @@ bool cssave(elem *e,regm_t regm,unsigned opsflag)
+@@ -2171,7 +2171,7 @@ bool cssave(elem *e,regm_t regm,unsigned opsflag)
              return false;
  
          //printf("cssave(e = %p, regm = %s, opsflag = x%x)\n", e, regm_str(regm), opsflag);
@@ -22,7 +22,7 @@ index 69ecb4cfc..667437960 100644
  
  #if 0
          /* Do not register CSEs if they are register variables and      */
-@@ -2575,7 +2575,7 @@ code *codelem(elem *e,regm_t *pretregs,bool constflag)
+@@ -2595,7 +2595,7 @@ code *codelem(elem *e,regm_t *pretregs,bool constflag)
          if (e->Ecount)                          /* if common subexp     */
          {
              /* if no return value       */
@@ -32,7 +32,7 @@ index 69ecb4cfc..667437960 100644
                      *pretregs |= BYTEREGS;
                  else if (tybasic(e->Ety) == TYdouble || tybasic(e->Ety) == TYdouble_alias)
 diff --git a/src/backend/cod1.c b/src/backend/cod1.c
-index 26b206dff..d96ac6aad 100644
+index 7eab3d031..f10b267bf 100644
 --- a/src/backend/cod1.c
 +++ b/src/backend/cod1.c
 @@ -572,6 +572,8 @@ code *loadea(elem *e,code *cs,unsigned op,unsigned reg,targ_size_t offset,
@@ -67,5 +67,5 @@ index 7764a8104..a873e5d53 100644
  int main()
  {
 -- 
-2.12.2
+2.13.2
 

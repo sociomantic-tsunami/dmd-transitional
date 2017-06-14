@@ -1,0 +1,30 @@
+From c26290e2a532b832f2c824a3d3e7a7b37eccd638 Mon Sep 17 00:00:00 2001
+From: Walter Bright <walter@walterbright.com>
+Date: Mon, 11 Apr 2016 02:06:48 -0700
+Subject: [PATCH 05/14] fix Issue 15861 - [REG 2.069] Wrong double-to-string
+ conversion with -O
+
+---
+ test/runnable/test15861.d | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+ create mode 100644 test/runnable/test15861.d
+
+diff --git a/test/runnable/test15861.d b/test/runnable/test15861.d
+new file mode 100644
+index 000000000..93b94c4c1
+--- /dev/null
++++ b/test/runnable/test15861.d
+@@ -0,0 +1,10 @@
++// REQUIRED_ARGS: -O
++// https://issues.dlang.org/show_bug.cgi?id=15861
++
++import std.format;
++
++void main()
++{
++    assert(format("%.18g", 4286853117.0) == "4286853117");
++}
++
+-- 
+2.13.2
+

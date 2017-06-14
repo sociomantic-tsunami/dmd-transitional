@@ -1,7 +1,7 @@
-From 822813dd259c0341a99f78ac6e8ddffdd91bfbe3 Mon Sep 17 00:00:00 2001
+From 6d1f840a4172969df9badfb8cccb970332ca9a91 Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Thu, 26 Jan 2017 18:52:49 +0100
-Subject: [PATCH] Add bindings for POSIX getdelim and getline
+Subject: [PATCH 14/17] Add bindings for POSIX getdelim and getline
 
 ---
  src/core/sys/posix/stdio.d | 4 ++++
@@ -20,5 +20,5 @@ index 122cba07..6cc30a99 100644
 +ssize_t getdelim (char** lineptr, size_t* n, int delimiter, FILE* stream);
 +ssize_t getline (char** lineptr, size_t* n, FILE* stream);
 -- 
-2.12.1
+2.13.2
 

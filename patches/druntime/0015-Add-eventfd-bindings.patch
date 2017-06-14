@@ -1,7 +1,7 @@
-From e4b0121edaf47139ffe4af27f126767536fa6a42 Mon Sep 17 00:00:00 2001
+From 803dfeb2315ef005c8de1d6e6f1d6d645e7aa28c Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Tue, 4 Apr 2017 15:27:57 +0200
-Subject: [PATCH] Add eventfd bindings
+Subject: [PATCH 15/17] Add eventfd bindings
 
 This adds bindings for linux-specific eventfd_* calls.
 
@@ -15,10 +15,10 @@ Cherry-pick of https://github.com/dlang/druntime/pull/1800/commits/0748d402f4dcf
  create mode 100644 src/core/sys/linux/sys/eventfd.d
 
 diff --git a/mak/COPY b/mak/COPY
-index 4fe11f25..e36d1a2a 100644
+index 089c6789..05caa3aa 100644
 --- a/mak/COPY
 +++ b/mak/COPY
-@@ -72,6 +72,7 @@ COPY=\
+@@ -76,6 +76,7 @@ COPY=\
  	$(IMPDIR)\core\sys\linux\tipc.d \
  	$(IMPDIR)\core\sys\linux\unistd.d \
  	\
@@ -118,10 +118,10 @@ index 00000000..f0e56195
 +else
 +    static assert(0, "unimplemented");
 diff --git a/win32.mak b/win32.mak
-index f54c6ba4..cc837563 100644
+index 57b1403a..570bb3e2 100644
 --- a/win32.mak
 +++ b/win32.mak
-@@ -415,6 +415,9 @@ $(IMPDIR)\core\sys\linux\tipc.d : src\core\sys\linux\tipc.d
+@@ -424,6 +424,9 @@ $(IMPDIR)\core\sys\linux\tipc.d : src\core\sys\linux\tipc.d
  $(IMPDIR)\core\sys\linux\unistd.d : src\core\sys\linux\unistd.d
  	copy $** $@
  
@@ -132,10 +132,10 @@ index f54c6ba4..cc837563 100644
  	copy $** $@
  
 diff --git a/win64.mak b/win64.mak
-index 3ef7f107..7454955c 100644
+index bbe17903..97d0fd2f 100644
 --- a/win64.mak
 +++ b/win64.mak
-@@ -423,6 +423,9 @@ $(IMPDIR)\core\sys\linux\tipc.d : src\core\sys\linux\tipc.d
+@@ -432,6 +432,9 @@ $(IMPDIR)\core\sys\linux\tipc.d : src\core\sys\linux\tipc.d
  $(IMPDIR)\core\sys\linux\unistd.d : src\core\sys\linux\unistd.d
  	copy $** $@
  
@@ -146,5 +146,5 @@ index 3ef7f107..7454955c 100644
  	copy $** $@
  
 -- 
-2.12.2
+2.13.2
 

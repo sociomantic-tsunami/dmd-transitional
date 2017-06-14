@@ -1,7 +1,7 @@
-From 01a9538bd37b8e8335e86195fb3ad6ce0d069fcc Mon Sep 17 00:00:00 2001
+From 616c29c30b67a741e0c677cf5174f2405e6bf8e7 Mon Sep 17 00:00:00 2001
 From: Walter Bright <walter@walterbright.com>
 Date: Tue, 29 Nov 2016 17:31:11 -0800
-Subject: [PATCH 20/21] fix Issue 16854 - Inline assembler has VMOVLHPS and
+Subject: [PATCH 12/14] fix Issue 16854 - Inline assembler has VMOVLHPS and
  VMOVHLPS swapped
 
 ---
@@ -52,5 +52,5 @@ index 679c2614d..b66482367 100644
          vmovhpd XMM0, XMM0, [RAX];
          vmovhpd [RAX], XMM0;
 -- 
-2.12.2
+2.13.2
 

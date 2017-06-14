@@ -1,7 +1,7 @@
-From 6f679e70cf5f80dac2b051928a2c940b004411bc Mon Sep 17 00:00:00 2001
+From cd2edd0c93e5d9825294d141a8286b0badc14e44 Mon Sep 17 00:00:00 2001
 From: Walter Bright <walter@walterbright.com>
 Date: Sun, 30 Oct 2016 02:06:49 -0700
-Subject: [PATCH 21/21] fix Issue 14613 - DMD: Internal error: backend/cod1.c
+Subject: [PATCH 13/14] fix Issue 14613 - DMD: Internal error: backend/cod1.c
  1567 on '-O' switch
 
 ---
@@ -12,10 +12,10 @@ Subject: [PATCH 21/21] fix Issue 14613 - DMD: Internal error: backend/cod1.c
  create mode 100644 test/runnable/test14613.d
 
 diff --git a/src/backend/cgcod.c b/src/backend/cgcod.c
-index c7921a2ad..716b5dbeb 100644
+index 5912f6cbb..0bac08290 100644
 --- a/src/backend/cgcod.c
 +++ b/src/backend/cgcod.c
-@@ -1834,6 +1834,9 @@ code *allocreg(regm_t *pretregs,unsigned *preg,tym_t tym
+@@ -1838,6 +1838,9 @@ code *allocreg(regm_t *pretregs,unsigned *preg,tym_t tym
          unsigned size = tysize[tym];
          *pretregs &= mES | allregs | XMMREGS;
          regm_t retregs = *pretregs;
@@ -25,7 +25,7 @@ index c7921a2ad..716b5dbeb 100644
          if ((retregs & regcon.mvar) == retregs) // if exactly in reg vars
          {
              if (size <= REGSIZE || (retregs & XMMREGS))
-@@ -2293,6 +2296,8 @@ STATIC code * comsub(elem *e,regm_t *pretregs)
+@@ -2313,6 +2316,8 @@ STATIC code * comsub(elem *e,regm_t *pretregs)
  
      if (emask & XMMREGS && *pretregs == mPSW)
          ;
@@ -35,10 +35,10 @@ index c7921a2ad..716b5dbeb 100644
          return comsub87(e,pretregs);
  
 diff --git a/src/backend/cod1.c b/src/backend/cod1.c
-index d96ac6aad..fcf95b4bc 100644
+index f10b267bf..2126ec960 100644
 --- a/src/backend/cod1.c
 +++ b/src/backend/cod1.c
-@@ -1809,7 +1809,14 @@ code *fixresult(elem *e,regm_t retregs,regm_t *pretregs)
+@@ -1791,7 +1791,14 @@ code *fixresult(elem *e,regm_t retregs,regm_t *pretregs)
          retregs = *pretregs & ~mPSW;
    }
    if (forccs)                           /* if return result in flags    */
@@ -54,7 +54,7 @@ index d96ac6aad..fcf95b4bc 100644
    return c;
  }
  
-@@ -4488,9 +4495,9 @@ code *loaddata(elem *e,regm_t *pretregs)
+@@ -4450,9 +4457,9 @@ code *loaddata(elem *e,regm_t *pretregs)
    regm_t flags,forregs,regm;
  
  #ifdef DEBUG
@@ -93,5 +93,5 @@ index 000000000..6b1e39a02
 +    assert(foo(1.0L) == 0.0L);
 +}
 -- 
-2.12.2
+2.13.2
 

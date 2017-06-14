@@ -1,7 +1,7 @@
-From 6dae748e0f36dddde9e679fc7fb7294afd3d95b2 Mon Sep 17 00:00:00 2001
+From b7f1f0d6a595ae3196e9668f8fc08097cf57e0b5 Mon Sep 17 00:00:00 2001
 From: Rainer Schuetze <r.sagitario@gmx.de>
 Date: Sun, 3 Jul 2016 11:06:42 +0200
-Subject: [PATCH 16/21] fix issue 16229: don't use alloca for huge symbols
+Subject: [PATCH 08/14] fix issue 16229: don't use alloca for huge symbols
 
 ---
  src/backend/pdata.c | 10 ++++++++--
@@ -57,5 +57,5 @@ index e2b0067d9..dbf1fe3cd 100644
  }
  
 -- 
-2.12.2
+2.13.2
 

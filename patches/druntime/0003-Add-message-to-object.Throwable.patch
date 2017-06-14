@@ -1,14 +1,14 @@
-From 831698091b0d4cbd7aa88522bb0fa5af3315cfe9 Mon Sep 17 00:00:00 2001
+From c7677dbdeea2608b4160037841b5c8343c8e4eef Mon Sep 17 00:00:00 2001
 From: Mihails Strasuns <mihails.strasuns.contractor@sociomantic.com>
 Date: Tue, 9 Feb 2016 22:24:24 +0200
-Subject: [PATCH 03/13] Add message() to object.Throwable
+Subject: [PATCH 03/17] Add message() to object.Throwable
 
 ---
  src/object.d | 15 +++++++++++++++
  1 file changed, 15 insertions(+)
 
 diff --git a/src/object.d b/src/object.d
-index f0eb55a..e9ae3c6 100644
+index 75ef6701..2bd77b78 100644
 --- a/src/object.d
 +++ b/src/object.d
 @@ -1623,6 +1623,19 @@ class Throwable : Object
@@ -41,5 +41,5 @@ index f0eb55a..e9ae3c6 100644
          {
              sink(": "); sink(msg);
 -- 
-2.7.4
+2.13.2
 

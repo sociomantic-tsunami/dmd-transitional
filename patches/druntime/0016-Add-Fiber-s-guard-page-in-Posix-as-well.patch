@@ -1,7 +1,7 @@
-From 9893aefd4dd16c14e7198fa82c314bcdeb4e9d0e Mon Sep 17 00:00:00 2001
+From 4f72e04dd6e8230db4847f43ba0c0e1faad8b8e5 Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Thu, 24 Nov 2016 17:25:39 +0100
-Subject: [PATCH] Add Fiber's guard page in Posix as well
+Subject: [PATCH 16/17] Add Fiber's guard page in Posix as well
 
 Windows Fiber implementation already uses the fiber stack guard page.
 This brings the similar protection for mmaped fiber stacks, using
@@ -46,10 +46,10 @@ index 00000000..926dfa1f
 +before or after stack pointer and it can be seen if it contains END OF FIBER
 +string pattern.
 diff --git a/src/core/thread.d b/src/core/thread.d
-index 88b7708f..52c5b426 100644
+index 75864fb9..c9f87f38 100644
 --- a/src/core/thread.d
 +++ b/src/core/thread.d
-@@ -3937,18 +3937,21 @@ class Fiber
+@@ -3943,18 +3943,21 @@ class Fiber
       * Params:
       *  fn = The fiber function.
       *  sz = The stack size for this fiber.
@@ -73,7 +73,7 @@ index 88b7708f..52c5b426 100644
          reset( fn );
      }
  
-@@ -3960,18 +3963,21 @@ class Fiber
+@@ -3966,18 +3969,21 @@ class Fiber
       * Params:
       *  dg = The fiber function.
       *  sz = The stack size for this fiber.
@@ -97,7 +97,7 @@ index 88b7708f..52c5b426 100644
          reset( dg );
      }
  
-@@ -4311,7 +4317,7 @@ private:
+@@ -4317,7 +4323,7 @@ private:
      //
      // Allocate a new stack for this fiber.
      //
@@ -106,7 +106,7 @@ index 88b7708f..52c5b426 100644
      in
      {
          assert( !m_pmem && !m_ctxt );
-@@ -4336,7 +4342,7 @@ private:
+@@ -4342,7 +4348,7 @@ private:
          {
              // reserve memory for stack
              m_pmem = VirtualAlloc( null,
@@ -115,7 +115,7 @@ index 88b7708f..52c5b426 100644
                                     MEM_RESERVE,
                                     PAGE_NOACCESS );
              if( !m_pmem )
-@@ -4344,7 +4350,7 @@ private:
+@@ -4350,7 +4356,7 @@ private:
  
              version( StackGrowsDown )
              {
@@ -124,7 +124,7 @@ index 88b7708f..52c5b426 100644
                  void* guard = m_pmem;
                  void* pbase = stack + sz;
              }
-@@ -4363,13 +4369,16 @@ private:
+@@ -4369,13 +4375,16 @@ private:
              if( !stack )
                  onOutOfMemoryError();
  
@@ -148,7 +148,7 @@ index 88b7708f..52c5b426 100644
  
              m_ctxt.bstack = pbase;
              m_ctxt.tstack = pbase;
-@@ -4384,6 +4393,9 @@ private:
+@@ -4390,6 +4399,9 @@ private:
  
              static if( __traits( compiles, mmap ) )
              {
@@ -158,7 +158,7 @@ index 88b7708f..52c5b426 100644
                  m_pmem = mmap( null,
                                 sz,
                                 PROT_READ | PROT_WRITE,
-@@ -4413,13 +4425,34 @@ private:
+@@ -4419,13 +4431,34 @@ private:
              {
                  m_ctxt.bstack = m_pmem + sz;
                  m_ctxt.tstack = m_pmem + sz;
@@ -194,5 +194,5 @@ index 88b7708f..52c5b426 100644
  
          Thread.add( m_ctxt );
 -- 
-2.12.2
+2.13.2
 

@@ -1,19 +1,19 @@
-From d2e86ddd27c67ecd5dbc440349b8838902721904 Mon Sep 17 00:00:00 2001
+From 332380822294f9d6f99d9170c4adc62c5a9c26ed Mon Sep 17 00:00:00 2001
 From: Walter Bright <walter@walterbright.com>
 Date: Sat, 24 Sep 2016 05:27:26 -0700
-Subject: [PATCH 17/21] fix Issue 16530 - -O -cov interaction leads to wrong
+Subject: [PATCH 09/14] fix Issue 16530 - -O -cov interaction leads to wrong
  codegen
 
 ---
  src/backend/cgcod.c    | 27 +++++++++++++++------------
- test/runnable/test42.d | 42 +++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 56 insertions(+), 13 deletions(-)
+ test/runnable/test42.d | 27 ++++++++++++++++++++++++++-
+ 2 files changed, 41 insertions(+), 13 deletions(-)
 
 diff --git a/src/backend/cgcod.c b/src/backend/cgcod.c
-index 667437960..c7921a2ad 100644
+index 2e6329db7..5912f6cbb 100644
 --- a/src/backend/cgcod.c
 +++ b/src/backend/cgcod.c
-@@ -2279,20 +2279,23 @@ STATIC code * comsub(elem *e,regm_t *pretregs)
+@@ -2299,20 +2299,23 @@ STATIC code * comsub(elem *e,regm_t *pretregs)
      code* c = CNIL;
      if (*pretregs == 0) goto done;        /* no possible side effects anyway */
  
@@ -50,7 +50,7 @@ index 667437960..c7921a2ad 100644
    /* create mask of what's in csextab[] */
    csemask = 0;
 diff --git a/test/runnable/test42.d b/test/runnable/test42.d
-index 6f4a712ea..ae4a5591a 100644
+index 8fc00cddd..8e2f5dafd 100644
 --- a/test/runnable/test42.d
 +++ b/test/runnable/test42.d
 @@ -5884,7 +5884,7 @@ void test11265()
@@ -62,24 +62,10 @@ index 6f4a712ea..ae4a5591a 100644
      {
          value %= 60;
          auto newVal = _seconds + value;
-@@ -6010,6 +6010,44 @@ void test14510()
+@@ -6062,6 +6062,30 @@ void test16027()
  }
  
  /***************************************************/
-+// https://issues.dlang.org/show_bug.cgi?id=16027
-+
-+void test16027()
-+{
-+    double value = 1.0;
-+    value *= -1.0;
-+    assert(value == -1.0);    // fails, value is +1.0
-+
-+    value = 1.0;
-+    value = value * -1.0;
-+    assert(value == -1.0);
-+}
-+
-+/***************************************************/
 +// https://issues.dlang.org/show_bug.cgi?id=16530
 +
 +double entropy2(double[] probs)
@@ -107,15 +93,14 @@ index 6f4a712ea..ae4a5591a 100644
  
  int main()
  {
-@@ -6305,6 +6343,8 @@ int main()
-     test12138();
+@@ -6359,6 +6383,7 @@ int main()
      test14430();
      test14510();
-+    test16027();
+     test16027();
 +    test16530();
  
      writefln("Success");
      return 0;
 -- 
-2.12.2
+2.13.2
 
