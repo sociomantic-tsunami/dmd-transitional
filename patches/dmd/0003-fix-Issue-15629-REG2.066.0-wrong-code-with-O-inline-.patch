@@ -1,0 +1,26 @@
+From 5bfb309fa04f006d94d34f77e5b9b92c0e5199ca Mon Sep 17 00:00:00 2001
+From: Walter Bright <walter@walterbright.com>
+Date: Thu, 14 Apr 2016 22:41:32 -0700
+Subject: [PATCH 03/14] fix Issue 15629 - [REG2.066.0] wrong code with '-O
+ -inline' but correct with '-O'
+
+---
+ test/runnable/mars1.d | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/runnable/mars1.d b/test/runnable/mars1.d
+index cd51c2697..590e2f6e8 100644
+--- a/test/runnable/mars1.d
++++ b/test/runnable/mars1.d
+@@ -1453,7 +1453,7 @@ void writeln(int v, int[] a)
+ }
+ 
+ ////////////////////////////////////////////////////////////////////////
+- 
++
+ int main()
+ {
+     testgoto();
+-- 
+2.13.2
+

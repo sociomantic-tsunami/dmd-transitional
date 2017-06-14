@@ -1,8 +1,8 @@
-From e5eb8a212cffcb6e7bfefa7bc6fcee3b04677f32 Mon Sep 17 00:00:00 2001
+From bd0188645e03d29f59e47b7ece6cba6e6f9468b7 Mon Sep 17 00:00:00 2001
 From: Walter Bright <walter@walterbright.com>
 Date: Fri, 20 May 2016 01:09:56 -0700
-Subject: [PATCH] Fix issue 15607 - [ICE] CTFE internal error: bad compare on
- accessing default-initialized static immutable array of array
+Subject: [PATCH 14/14] Fix issue 15607 - [ICE] CTFE internal error: bad
+ compare on accessing default-initialized static immutable array of array
 
 ---
  src/init.d                | 37 ++++++++++++++++++++++++++++++++++---
@@ -10,7 +10,7 @@ Subject: [PATCH] Fix issue 15607 - [ICE] CTFE internal error: bad compare on
  2 files changed, 43 insertions(+), 4 deletions(-)
 
 diff --git a/src/init.d b/src/init.d
-index 2e791ce84..0163d59b9 100644
+index 4792cf2bd..828d18524 100644
 --- a/src/init.d
 +++ b/src/init.d
 @@ -8,6 +8,8 @@
@@ -31,7 +31,7 @@ index 2e791ce84..0163d59b9 100644
          if (sem) // if semantic() already run
              return this;
          sem = true;
-@@ -677,9 +679,9 @@ public:
+@@ -678,9 +680,9 @@ public:
              }
              (*elements)[j] = ex;
          }
@@ -43,7 +43,7 @@ index 2e791ce84..0163d59b9 100644
              Expression _init = null;
              for (size_t i = 0; i < edim; i++)
              {
-@@ -692,12 +694,41 @@ public:
+@@ -693,12 +695,41 @@ public:
                      (*elements)[i] = _init;
                  }
              }
@@ -114,5 +114,5 @@ index e0dd372ed..9fef2cdcd 100644
  int main()
  {
 -- 
-2.13.1
+2.13.2
 

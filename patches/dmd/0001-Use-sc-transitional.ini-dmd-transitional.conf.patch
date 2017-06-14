@@ -1,7 +1,7 @@
-From 0c6d41aa940026cbe15a736f69a80805114079bc Mon Sep 17 00:00:00 2001
+From 34efa4f9f4b9d5c8126edfa8e58de9abd7c3bed1 Mon Sep 17 00:00:00 2001
 From: Mihails Strasuns <mihails.strasuns.contractor@sociomantic.com>
 Date: Tue, 9 Feb 2016 20:37:37 +0200
-Subject: [PATCH 01/21] Use sc-transitional.ini/dmd-transitional.conf
+Subject: [PATCH 01/14] Use sc-transitional.ini/dmd-transitional.conf
 
 Looks for dmd configuration under different name from upstream compiler
 ---
@@ -9,10 +9,10 @@ Looks for dmd configuration under different name from upstream compiler
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/mars.d b/src/mars.d
-index 22e1bcbf7..d5d728154 100644
+index 17fbb7f59..641c732e1 100644
 --- a/src/mars.d
 +++ b/src/mars.d
-@@ -384,11 +384,11 @@ extern (C++) int tryMain(size_t argc, const(char)** argv)
+@@ -395,11 +395,11 @@ private int tryMain(size_t argc, const(char)** argv)
      {
          version (Windows)
          {
@@ -27,5 +27,5 @@ index 22e1bcbf7..d5d728154 100644
          else
          {
 -- 
-2.12.2
+2.13.2
 

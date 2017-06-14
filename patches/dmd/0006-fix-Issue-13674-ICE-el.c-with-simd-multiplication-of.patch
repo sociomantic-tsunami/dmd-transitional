@@ -1,7 +1,7 @@
-From 43ccfec449abfb9e226843b283bf27a56e5ac80e Mon Sep 17 00:00:00 2001
+From 1b3c6799622e5ff484dc1969b1a1fb1a845baf0d Mon Sep 17 00:00:00 2001
 From: Walter Bright <walter@walterbright.com>
 Date: Wed, 20 Apr 2016 01:58:06 -0700
-Subject: [PATCH 13/21] fix Issue 13674 - ICE(el.c) with simd multiplication of
+Subject: [PATCH 06/14] fix Issue 13674 - ICE(el.c) with simd multiplication of
  short8
 
 ---
@@ -10,10 +10,10 @@ Subject: [PATCH 13/21] fix Issue 13674 - ICE(el.c) with simd multiplication of
  2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/src/backend/cgelem.c b/src/backend/cgelem.c
-index e4a7340ac..9eb38fbd4 100644
+index 5a149f919..94e099cff 100644
 --- a/src/backend/cgelem.c
 +++ b/src/backend/cgelem.c
-@@ -1004,7 +1004,7 @@ STATIC elem * elmul(elem *e, goal_t goal)
+@@ -976,7 +976,7 @@ STATIC elem * elmul(elem *e, goal_t goal)
              }
          }
  
@@ -44,5 +44,5 @@ index 1d73e24a9..7764a8104 100644
  
  
 -- 
-2.12.2
+2.13.2
 

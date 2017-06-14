@@ -1,7 +1,7 @@
-From 72f753acf691b80717616777b4ffa57849ad3abb Mon Sep 17 00:00:00 2001
+From 130e46348e0c237a3d26fb15a44196e6edfc6765 Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Fri, 24 Feb 2017 16:12:35 +0100
-Subject: [PATCH 11/13] Change version(Linux) to version(linux)
+Subject: [PATCH 10/17] Change version(Linux) to version(linux)
 
 ---
  src/core/sys/linux/sched.d           | 2 +-
@@ -9,7 +9,7 @@ Subject: [PATCH 11/13] Change version(Linux) to version(linux)
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/core/sys/linux/sched.d b/src/core/sys/linux/sched.d
-index 6dc6e33..52938b5 100644
+index 6dc6e336..52938b55 100644
 --- a/src/core/sys/linux/sched.d
 +++ b/src/core/sys/linux/sched.d
 @@ -18,7 +18,7 @@ import core.sys.posix.sched;
@@ -22,7 +22,7 @@ index 6dc6e33..52938b5 100644
  @nogc:
  nothrow:
 diff --git a/src/core/sys/linux/sys/netinet/tcp.d b/src/core/sys/linux/sys/netinet/tcp.d
-index b4acdd2..67458f6 100644
+index b4acdd23..67458f63 100644
 --- a/src/core/sys/linux/sys/netinet/tcp.d
 +++ b/src/core/sys/linux/sys/netinet/tcp.d
 @@ -43,7 +43,7 @@ module core.sys.linux.sys.netinet.tcp;
@@ -35,5 +35,5 @@ index b4acdd2..67458f6 100644
  /// User-settable options (used with setsockopt).
  enum
 -- 
-2.7.4
+2.13.2
 

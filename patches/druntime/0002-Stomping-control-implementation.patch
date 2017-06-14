@@ -1,7 +1,7 @@
-From 9c40b4a69b772e2771d54f685c0a5f7a4a5193c5 Mon Sep 17 00:00:00 2001
+From 093e2409b0ca8e8827864765ce21b989884cce72 Mon Sep 17 00:00:00 2001
 From: Mihails Strasuns <mihails.strasuns.contractor@sociomantic.com>
 Date: Sun, 6 Sep 2015 05:38:41 +0300
-Subject: [PATCH 02/13] Stomping control implementation
+Subject: [PATCH 02/17] Stomping control implementation
 
 ---
  posix.mak         |  8 ++++--
@@ -9,7 +9,7 @@ Subject: [PATCH 02/13] Stomping control implementation
  2 files changed, 82 insertions(+), 6 deletions(-)
 
 diff --git a/posix.mak b/posix.mak
-index 7175f0f..12dca19 100644
+index 91c30606..b55c8a56 100644
 --- a/posix.mak
 +++ b/posix.mak
 @@ -3,6 +3,10 @@
@@ -20,7 +20,7 @@ index 7175f0f..12dca19 100644
 +# See https://github.com/sociomantic/druntime/pull/14 for details
 +export ASSERT_ON_STOMPING_PREVENTION=0
 +
- QUIET:=@
+ QUIET:=
  
  include osmodel.mak
 @@ -53,10 +57,10 @@ endif
@@ -37,7 +37,7 @@ index 7175f0f..12dca19 100644
  endif
  
 diff --git a/src/rt/lifetime.d b/src/rt/lifetime.d
-index d28edf8..24c6d90 100644
+index d28edf8c..24c6d902 100644
 --- a/src/rt/lifetime.d
 +++ b/src/rt/lifetime.d
 @@ -17,7 +17,7 @@ import core.stdc.string;
@@ -177,5 +177,5 @@ index d28edf8..24c6d90 100644
          }
          else
 -- 
-2.7.4
+2.13.2
 

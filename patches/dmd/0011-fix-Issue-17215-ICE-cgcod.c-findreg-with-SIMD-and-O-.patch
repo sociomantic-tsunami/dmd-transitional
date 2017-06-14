@@ -1,8 +1,8 @@
-From c50f8012d97fc3fed30872cd9c7bcb4234987786 Mon Sep 17 00:00:00 2001
+From 314c96450478b34ff187d06c6fa7efe842650c10 Mon Sep 17 00:00:00 2001
 From: Martin Nowak <code@dawg.eu>
 Date: Fri, 24 Feb 2017 20:19:38 +0100
-Subject: [PATCH 19/21] fix Issue 17215 -  ICE(cgcod.c:findreg) with SIMD and
- -O -inline
+Subject: [PATCH 11/14] fix Issue 17215 - ICE(cgcod.c:findreg) with SIMD and -O
+ -inline
 
 - caused by assigning 2*REGSIZE XMM vectors partially
 - only triggers since SROA sees this 8 bytes access
@@ -13,10 +13,10 @@ Subject: [PATCH 19/21] fix Issue 17215 -  ICE(cgcod.c:findreg) with SIMD and
  create mode 100644 test/compilable/test17215.d
 
 diff --git a/src/backend/cgelem.c b/src/backend/cgelem.c
-index aeeb9799e..3e23f40c1 100644
+index 8e9bf47a4..1bc28eed0 100644
 --- a/src/backend/cgelem.c
 +++ b/src/backend/cgelem.c
-@@ -3578,7 +3578,7 @@ STATIC elem * eleq(elem *e, goal_t goal)
+@@ -3499,7 +3499,7 @@ STATIC elem * eleq(elem *e, goal_t goal)
              e1->Eoper == OPvar &&
              e2->Eoper == OPvar &&
              goal == GOALnone &&
@@ -41,5 +41,5 @@ index 000000000..047039e76
 +    return b;
 +}
 -- 
-2.12.2
+2.13.2
 

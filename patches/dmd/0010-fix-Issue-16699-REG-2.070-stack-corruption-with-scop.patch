@@ -1,7 +1,7 @@
-From a1176668452bdc1940a1ac401247a3287fa39c7b Mon Sep 17 00:00:00 2001
+From 2b18823c8e7517897bddea137f612f32a26cae6b Mon Sep 17 00:00:00 2001
 From: Walter Bright <walter@walterbright.com>
 Date: Fri, 18 Nov 2016 02:11:04 -0800
-Subject: [PATCH 18/21] fix Issue 16699 - [REG 2.070] stack corruption with
+Subject: [PATCH 10/14] fix Issue 16699 - [REG 2.070] stack corruption with
  scope(exit)
 
 ---
@@ -11,10 +11,10 @@ Subject: [PATCH 18/21] fix Issue 16699 - [REG 2.070] stack corruption with
  3 files changed, 26 insertions(+), 2 deletions(-)
 
 diff --git a/src/backend/cgelem.c b/src/backend/cgelem.c
-index 9eb38fbd4..aeeb9799e 100644
+index 94e099cff..8e9bf47a4 100644
 --- a/src/backend/cgelem.c
 +++ b/src/backend/cgelem.c
-@@ -5420,7 +5420,7 @@ elem *doptelem(elem *e, goal_t goal)
+@@ -5307,7 +5307,7 @@ elem *doptelem(elem *e, goal_t goal)
  
      /* If entire expression is a struct, and we can replace it with     */
      /* something simpler, do so.                                        */
@@ -24,10 +24,10 @@ index 9eb38fbd4..aeeb9799e 100644
  
      return e;
 diff --git a/src/backend/el.c b/src/backend/el.c
-index 73ca303b2..6173edffe 100644
+index 58070b7d1..9ea52488c 100644
 --- a/src/backend/el.c
 +++ b/src/backend/el.c
-@@ -3188,7 +3188,7 @@ void elem_print(elem *e)
+@@ -3175,7 +3175,7 @@ void elem_print(elem *e)
    else
    {
          if ((e->Eoper == OPstrpar || e->Eoper == OPstrctor || e->Eoper == OPstreq) ||
@@ -37,10 +37,10 @@ index 73ca303b2..6173edffe 100644
                  dbg_printf("%d ", (int)type_size(e->ET));
          WRTYxx(e->Ety);
 diff --git a/test/runnable/mars1.d b/test/runnable/mars1.d
-index 0d85662b9..71f9b7d67 100644
+index 590e2f6e8..aac59d26f 100644
 --- a/test/runnable/mars1.d
 +++ b/test/runnable/mars1.d
-@@ -1441,6 +1441,29 @@ void writeln(int v, int[] a)
+@@ -1454,6 +1454,29 @@ void writeln(int v, int[] a)
  
  ////////////////////////////////////////////////////////////////////////
  
@@ -70,14 +70,14 @@ index 0d85662b9..71f9b7d67 100644
  int main()
  {
      testgoto();
-@@ -1491,6 +1514,7 @@ int main()
+@@ -1504,6 +1527,7 @@ int main()
      test15272();
- 
+     test15861();
      test15629();
 +    test16699();
      printf("Success\n");
      return 0;
  }
 -- 
-2.12.2
+2.13.2
 
