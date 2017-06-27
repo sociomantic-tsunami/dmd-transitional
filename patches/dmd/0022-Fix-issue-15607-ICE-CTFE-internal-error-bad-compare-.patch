@@ -1,0 +1,118 @@
+From e5eb8a212cffcb6e7bfefa7bc6fcee3b04677f32 Mon Sep 17 00:00:00 2001
+From: Walter Bright <walter@walterbright.com>
+Date: Fri, 20 May 2016 01:09:56 -0700
+Subject: [PATCH] Fix issue 15607 - [ICE] CTFE internal error: bad compare on
+ accessing default-initialized static immutable array of array
+
+---
+ src/init.d                | 37 ++++++++++++++++++++++++++++++++++---
+ test/runnable/constfold.d | 10 +++++++++-
+ 2 files changed, 43 insertions(+), 4 deletions(-)
+
+diff --git a/src/init.d b/src/init.d
+index 2e791ce84..0163d59b9 100644
+--- a/src/init.d
++++ b/src/init.d
+@@ -8,6 +8,8 @@
+ 
+ module ddmd.init;
+ 
++import core.stdc.stdio;
++
+ import ddmd.aggregate;
+ import ddmd.arraytypes;
+ import ddmd.dcast;
+@@ -499,7 +501,7 @@ public:
+         size_t length;
+         const(uint) amax = 0x80000000;
+         bool errors = false;
+-        //printf("ArrayInitializer::semantic(%s)\n", t->toChars());
++        //printf("ArrayInitializer::semantic(%s)\n", t.toChars());
+         if (sem) // if semantic() already run
+             return this;
+         sem = true;
+@@ -677,9 +679,9 @@ public:
+             }
+             (*elements)[j] = ex;
+         }
+-        /* Fill in any missing elements with the default initializer
+-         */
+         {
++            /* Fill in any missing elements with the default initializer
++             */
+             Expression _init = null;
+             for (size_t i = 0; i < edim; i++)
+             {
+@@ -692,12 +694,41 @@ public:
+                     (*elements)[i] = _init;
+                 }
+             }
++
++            /* Expand any static array initializers that are a single expression
++             * into an array of them
++             */
++            if (t)
++            {
++                Type tn = t.nextOf().toBasetype();
++                if (tn.ty == Tsarray)
++                {
++                    const dim = cast(size_t)(cast(TypeSArray)tn).dim.toInteger();
++                    Type te = tn.nextOf().toBasetype();
++                    foreach (ref e; *elements)
++                    {
++                        if (te.equals(e.type))
++                        {
++                            auto elements2 = new Expressions();
++                            elements2.setDim(dim);
++                            foreach (ref e2; *elements2)
++                                e2 = e;
++                            e = new ArrayLiteralExp(e.loc, elements2);
++                            e.type = tn;
++                        }
++                    }
++                }
++            }
++
++            /* If any elements are errors, then the whole thing is an error
++             */
+             for (size_t i = 0; i < edim; i++)
+             {
+                 Expression e = (*elements)[i];
+                 if (e.op == TOKerror)
+                     return e;
+             }
++
+             Expression e = new ArrayLiteralExp(loc, elements);
+             e.type = type;
+             return e;
+diff --git a/test/runnable/constfold.d b/test/runnable/constfold.d
+index e0dd372ed..9fef2cdcd 100644
+--- a/test/runnable/constfold.d
++++ b/test/runnable/constfold.d
+@@ -406,7 +406,7 @@ void test3()
+ 
+      // should print "11111"
+      writeln(signbit(n), signbit(m),
+-	signbit(c.re), signbit(d.re), signbit(e.re));
++        signbit(c.re), signbit(d.re), signbit(e.re));
+ 
+      assert(signbit(n) == 1);
+      assert(signbit(m) == 1);
+@@ -773,6 +773,14 @@ void test14459()
+ }
+ 
+ /************************************/
++// https://issues.dlang.org/show_bug.cgi?id=15607
++
++static immutable char[2][4] code_base = [ "??", 12 ];
++static assert(code_base[0] == "??");
++static assert(code_base[1] == [12, 12]);
++static assert(code_base[2] == typeof(code_base[2]).init);
++
++/************************************/
+ 
+ int main()
+ {
+-- 
+2.13.1
+
