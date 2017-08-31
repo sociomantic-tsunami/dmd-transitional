@@ -1,0 +1,48 @@
+From d1ba6a921faaa77ff0ccac7891ab840be62bd0ea Mon Sep 17 00:00:00 2001
+From: Mihails Strasuns <mihails.strasuns.contractor@sociomantic.com>
+Date: Thu, 31 Aug 2017 14:49:04 +0300
+Subject: [PATCH] Don't trigger stomping prevention with -cov
+
+---
+ src/rt/cover.d | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/rt/cover.d b/src/rt/cover.d
+index 23baf15..7c8ba39 100644
+--- a/src/rt/cover.d
++++ b/src/rt/cover.d
+@@ -423,6 +423,8 @@ bool readFile(FILE* file, ref char[] buf)
+         return false;
+ 
+     buf.length = len;
++    assumeSafeAppend(buf);
++
+     fseek(file, 0, SEEK_SET);
+     if (fread(buf.ptr, 1, buf.length, file) != buf.length)
+         assert(0, "fread failed");
+@@ -454,6 +456,7 @@ void splitLines( char[] buf, ref char[][] lines )
+             pos = 0;
+ 
+     lines.length = 0;
++    assumeSafeAppend(lines);
+     for( ; pos < buf.length; ++pos )
+     {
+         char c = buf[pos];
+@@ -502,12 +505,14 @@ char[] expandTabs( char[] str, int tabsize = 8 )
+                     result = null;
+                     result.length = str.length + nspaces - 1;
+                     result.length = i + nspaces;
++                    assumeSafeAppend(result);
+                     result[0 .. i] = str[0 .. i];
+                     result[i .. i + nspaces] = ' ';
+                 }
+                 else
+                 {   auto j = result.length;
+                     result.length = j + nspaces;
++                    assumeSafeAppend(result);
+                     result[j .. j + nspaces] = ' ';
+                 }
+                 column += nspaces;
+-- 
+2.14.1
+
