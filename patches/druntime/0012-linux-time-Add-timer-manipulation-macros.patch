@@ -1,7 +1,7 @@
-From 163181d5a04cbd49198b4464d7fdec2e8d3b1d26 Mon Sep 17 00:00:00 2001
+From 99119da2c5ff7e2fc48017f74fb9d99168fbe3d4 Mon Sep 17 00:00:00 2001
 From: Leandro Lucarella <leandro.lucarella@sociomantic.com>
 Date: Fri, 25 Nov 2016 17:07:36 -0300
-Subject: [PATCH 12/17] linux/time: Add timer manipulation macros
+Subject: [PATCH 12/18] linux/time: Add timer manipulation macros
 
 ---
  mak/COPY                      |  1 +
@@ -119,5 +119,5 @@ index dbeb58a9..33793da3 100644
  extern (C) nothrow @nogc:
  
 -- 
-2.13.2
+2.14.1
 

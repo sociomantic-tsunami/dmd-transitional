@@ -1,7 +1,7 @@
-From 09d823903fa2d7750fe5c090f0e45d7ab6a9a4c2 Mon Sep 17 00:00:00 2001
+From ea26af213ef6adbef6abe209e19532ddb8d9e8c7 Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Fri, 25 Nov 2016 17:04:07 +0100
-Subject: [PATCH 04/17] Add bindings for getifaddrs/freeifaddrs
+Subject: [PATCH 04/18] Add bindings for getifaddrs/freeifaddrs
 
 ---
  mak/COPY                     |  1 +
@@ -112,5 +112,5 @@ index 69f3ba70..a505930b 100644
  	copy $** $@
  
 -- 
-2.13.2
+2.14.1
 

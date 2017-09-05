@@ -1,7 +1,7 @@
-From e970d632b4e77b9eb459742eb4f943a8e452b643 Mon Sep 17 00:00:00 2001
+From c8e10c0d54b4e4fd870e4b06f3c959b1b70847e7 Mon Sep 17 00:00:00 2001
 From: Leandro Lucarella <leandro.lucarella@sociomantic.com>
 Date: Thu, 24 Nov 2016 20:05:48 -0300
-Subject: [PATCH 08/17] Add missing POSIX <libgen.h> header
+Subject: [PATCH 08/18] Add missing POSIX <libgen.h> header
 
 ---
  mak/COPY                    |  1 +
@@ -80,5 +80,5 @@ index b6875a40..bbe17903 100644
  	copy $** $@
  
 -- 
-2.13.2
+2.14.1
 

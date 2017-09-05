@@ -1,7 +1,7 @@
-From 0996435a80b65f8c903eb2a7a9f0ddb564b4b988 Mon Sep 17 00:00:00 2001
+From 6b693b959031ed9aeb8a76e3f40ba12cad7b877c Mon Sep 17 00:00:00 2001
 From: Tomer Filiba <tomer@weka.io>
 Date: Tue, 21 Feb 2017 18:15:24 +0200
-Subject: [PATCH 11/17] Fix wrong version name in core.sys.linux.ifaddrs
+Subject: [PATCH 11/18] Fix wrong version name in core.sys.linux.ifaddrs
 
 ---
  src/core/sys/linux/ifaddrs.d | 2 +-
@@ -21,5 +21,5 @@ index 1fc5e885..bfdd59bf 100644
  nothrow:
  @nogc:
 -- 
-2.13.2
+2.14.1
 

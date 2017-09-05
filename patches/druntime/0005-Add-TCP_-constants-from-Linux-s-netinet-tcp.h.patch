@@ -1,7 +1,7 @@
-From e9ef6f9066ef3d32d0b4059c9898448d582b9132 Mon Sep 17 00:00:00 2001
+From b599687886c20416125c0a9c566cfc3f490b6047 Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Mon, 28 Nov 2016 18:44:19 +0100
-Subject: [PATCH 05/17] Add TCP_* constants from Linux's netinet/tcp.h
+Subject: [PATCH 05/18] Add TCP_* constants from Linux's netinet/tcp.h
 
 ---
  mak/COPY                             |  1 +
@@ -137,5 +137,5 @@ index a505930b..86cfe022 100644
  	copy $** $@
  
 -- 
-2.13.2
+2.14.1
 
