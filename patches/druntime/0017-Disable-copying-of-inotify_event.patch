@@ -1,7 +1,7 @@
-From 279ce31447985678fd6f0ed4113365e1dbcc4e04 Mon Sep 17 00:00:00 2001
+From 506653288afbd568bde79e5376ea7efadf139fc7 Mon Sep 17 00:00:00 2001
 From: Mihails Strasuns <mihails.strasuns@gmail.com>
 Date: Fri, 28 Apr 2017 17:04:15 +0200
-Subject: [PATCH 17/17] Disable copying of inotify_event
+Subject: [PATCH 17/18] Disable copying of inotify_event
 
 Pick of https://github.com/dlang/druntime/pull/1795
 ---
@@ -22,5 +22,5 @@ index 41ad65c2..0e273c63 100644
  
  enum: uint
 -- 
-2.13.2
+2.14.1
 

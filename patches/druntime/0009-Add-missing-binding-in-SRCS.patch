@@ -1,7 +1,7 @@
-From e298540c6c02744981ef1eba54fa44270822b317 Mon Sep 17 00:00:00 2001
+From 1c426804512b7e2d80a2f2c51038d3b6d30b6ff7 Mon Sep 17 00:00:00 2001
 From: Mathias Lang <mathias.lang@sociomantic.com>
 Date: Mon, 6 Feb 2017 17:20:57 +0100
-Subject: [PATCH 09/17] Add missing binding in SRCS
+Subject: [PATCH 09/18] Add missing binding in SRCS
 
 The following files were not part of `mak/SRCS`, and thus were not compiled it:
 - src\core\sys\posix\sys\ipc.d
@@ -72,5 +72,5 @@ index 84555ad5..8a0d9819 100644
  	src\core\sys\solaris\sys\priocntl.d \
  	src\core\sys\solaris\sys\types.d \
 -- 
-2.13.2
+2.14.1
 

@@ -1,7 +1,7 @@
-From 130e46348e0c237a3d26fb15a44196e6edfc6765 Mon Sep 17 00:00:00 2001
+From 67609235dea7cb989ebc25cf549fbf7d4eb3cf5b Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Fri, 24 Feb 2017 16:12:35 +0100
-Subject: [PATCH 10/17] Change version(Linux) to version(linux)
+Subject: [PATCH 10/18] Change version(Linux) to version(linux)
 
 ---
  src/core/sys/linux/sched.d           | 2 +-
@@ -35,5 +35,5 @@ index b4acdd23..67458f63 100644
  /// User-settable options (used with setsockopt).
  enum
 -- 
-2.13.2
+2.14.1
 
