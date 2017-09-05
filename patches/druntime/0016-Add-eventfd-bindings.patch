@@ -1,7 +1,7 @@
-From e4b0121edaf47139ffe4af27f126767536fa6a42 Mon Sep 17 00:00:00 2001
+From 902f486fed193d663dce4a33ae86044723ce724b Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Tue, 4 Apr 2017 15:27:57 +0200
-Subject: [PATCH] Add eventfd bindings
+Subject: [PATCH 16/19] Add eventfd bindings
 
 This adds bindings for linux-specific eventfd_* calls.
 
@@ -15,7 +15,7 @@ Cherry-pick of https://github.com/dlang/druntime/pull/1800/commits/0748d402f4dcf
  create mode 100644 src/core/sys/linux/sys/eventfd.d
 
 diff --git a/mak/COPY b/mak/COPY
-index 4fe11f25..e36d1a2a 100644
+index 4fe11f2..e36d1a2 100644
 --- a/mak/COPY
 +++ b/mak/COPY
 @@ -72,6 +72,7 @@ COPY=\
@@ -28,7 +28,7 @@ index 4fe11f25..e36d1a2a 100644
  	$(IMPDIR)\core\sys\linux\sys\netinet\tcp.d \
 diff --git a/src/core/sys/linux/sys/eventfd.d b/src/core/sys/linux/sys/eventfd.d
 new file mode 100644
-index 00000000..f0e56195
+index 0000000..f0e5619
 --- /dev/null
 +++ b/src/core/sys/linux/sys/eventfd.d
 @@ -0,0 +1,85 @@
@@ -118,7 +118,7 @@ index 00000000..f0e56195
 +else
 +    static assert(0, "unimplemented");
 diff --git a/win32.mak b/win32.mak
-index f54c6ba4..cc837563 100644
+index f54c6ba..cc83756 100644
 --- a/win32.mak
 +++ b/win32.mak
 @@ -415,6 +415,9 @@ $(IMPDIR)\core\sys\linux\tipc.d : src\core\sys\linux\tipc.d
@@ -132,7 +132,7 @@ index f54c6ba4..cc837563 100644
  	copy $** $@
  
 diff --git a/win64.mak b/win64.mak
-index 3ef7f107..7454955c 100644
+index 3ef7f10..7454955 100644
 --- a/win64.mak
 +++ b/win64.mak
 @@ -423,6 +423,9 @@ $(IMPDIR)\core\sys\linux\tipc.d : src\core\sys\linux\tipc.d
@@ -146,5 +146,5 @@ index 3ef7f107..7454955c 100644
  	copy $** $@
  
 -- 
-2.12.2
+2.14.1
 

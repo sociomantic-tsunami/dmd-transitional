@@ -1,7 +1,7 @@
-From 6c566f087ff3824cfaeca1755bfd68a32ccdb5f4 Mon Sep 17 00:00:00 2001
+From 5bf70479e6808e5087759dcc319f4ce67de6f1b2 Mon Sep 17 00:00:00 2001
 From: Mathias Lang <mathias.lang@sociomantic.com>
 Date: Tue, 26 Jan 2016 18:50:33 +0100
-Subject: [PATCH 04/13] Add core.sys.posix.mqueue, C bindings for POSIX's
+Subject: [PATCH 04/19] Add core.sys.posix.mqueue, C bindings for POSIX's
  <mqueue.h>
 
 This is a binding for POSIX message queues.
@@ -237,5 +237,5 @@ index 0000000..67ea678
 +int mq_timedsend (mqd_t mqdes, const(char)* msg_ptr, size_t msg_len,
 +                   uint msg_prio, const(timespec)* abs_timeout);
 -- 
-2.7.4
+2.14.1
 

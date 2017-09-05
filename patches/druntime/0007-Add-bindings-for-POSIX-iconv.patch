@@ -1,7 +1,7 @@
-From e03d84e9d45be9041d8c29496b7b13f0506ec562 Mon Sep 17 00:00:00 2001
+From d8f4965067de28ef75ea51e7144ed3f70da95cb5 Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Thu, 24 Nov 2016 13:48:53 +0100
-Subject: [PATCH 07/13] Add bindings for POSIX iconv
+Subject: [PATCH 07/19] Add bindings for POSIX iconv
 
 ---
  mak/COPY                   |  1 +
@@ -102,5 +102,5 @@ index 1f09673..c2ea1a8 100644
  	copy $** $@
  
 -- 
-2.7.4
+2.14.1
 

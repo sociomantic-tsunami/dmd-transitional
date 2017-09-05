@@ -1,7 +1,7 @@
-From 9893aefd4dd16c14e7198fa82c314bcdeb4e9d0e Mon Sep 17 00:00:00 2001
+From 61f52b81954cadddca0a97f8ab47575dec9883bc Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Thu, 24 Nov 2016 17:25:39 +0100
-Subject: [PATCH] Add Fiber's guard page in Posix as well
+Subject: [PATCH 17/19] Add Fiber's guard page in Posix as well
 
 Windows Fiber implementation already uses the fiber stack guard page.
 This brings the similar protection for mmaped fiber stacks, using
@@ -20,7 +20,7 @@ Fiber's constructor's parameter `guard_page_size`.
 
 diff --git a/changelog/fiber-configure.dd b/changelog/fiber-configure.dd
 new file mode 100644
-index 00000000..23267356
+index 0000000..2326735
 --- /dev/null
 +++ b/changelog/fiber-configure.dd
 @@ -0,0 +1,6 @@
@@ -32,7 +32,7 @@ index 00000000..23267356
 +turn this feature off.
 diff --git a/changelog/fiber.dd b/changelog/fiber.dd
 new file mode 100644
-index 00000000..926dfa1f
+index 0000000..926dfa1
 --- /dev/null
 +++ b/changelog/fiber.dd
 @@ -0,0 +1,9 @@
@@ -46,7 +46,7 @@ index 00000000..926dfa1f
 +before or after stack pointer and it can be seen if it contains END OF FIBER
 +string pattern.
 diff --git a/src/core/thread.d b/src/core/thread.d
-index 88b7708f..52c5b426 100644
+index 88b7708..52c5b42 100644
 --- a/src/core/thread.d
 +++ b/src/core/thread.d
 @@ -3937,18 +3937,21 @@ class Fiber
@@ -194,5 +194,5 @@ index 88b7708f..52c5b426 100644
  
          Thread.add( m_ctxt );
 -- 
-2.12.2
+2.14.1
 
