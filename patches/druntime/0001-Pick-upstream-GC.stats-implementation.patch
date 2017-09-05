@@ -1,7 +1,7 @@
-From b96097c11822f2e1760567c41be64cbc9c65134b Mon Sep 17 00:00:00 2001
+From 24659c667dbf20693cbfe713bd1527e527adf004 Mon Sep 17 00:00:00 2001
 From: Mathias Lang <mathias.lang@sociomantic.com>
 Date: Fri, 24 Jul 2015 17:57:13 +0200
-Subject: [PATCH 01/13] Pick upstream GC.stats implementation
+Subject: [PATCH 01/19] Pick upstream GC.stats implementation
 
 Picks changes from https://github.com/dlang/druntime/pull/1610
 ---
@@ -37,10 +37,11 @@ index c222831..9996a74 100644
  
      extern (C) void gc_addRoot( in void* p ) nothrow;
      extern (C) void gc_addRange( in void* p, size_t sz, const TypeInfo ti = null ) nothrow @nogc;
-@@ -157,6 +158,17 @@ struct GC
+@@ -156,6 +157,17 @@ struct GC
+ {
      @disable this();
  
-     /**
++    /**
 +     * Aggregation of GC stats to be exposed via public API
 +     */
 +    static struct Stats
@@ -51,10 +52,9 @@ index c222831..9996a74 100644
 +        size_t freeSize;
 +    }
 +
-+    /**
+     /**
       * Enables automatic garbage collection behavior if collections have
       * previously been suspended by a call to disable.  This function is
-      * reentrant, and must be called once for every call to disable before
 @@ -657,6 +669,14 @@ struct GC
          return gc_query( p );
      }
@@ -273,5 +273,5 @@ index 2d6a01a..0000000
 -    size_t pageblocks;      // number of blocks marked PAGE
 -}
 -- 
-2.7.4
+2.14.1
 
