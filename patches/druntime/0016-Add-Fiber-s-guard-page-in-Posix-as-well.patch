@@ -1,7 +1,7 @@
-From 4f72e04dd6e8230db4847f43ba0c0e1faad8b8e5 Mon Sep 17 00:00:00 2001
+From 0699e066092c895898209b0b4715f79f93084703 Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Thu, 24 Nov 2016 17:25:39 +0100
-Subject: [PATCH 16/17] Add Fiber's guard page in Posix as well
+Subject: [PATCH 16/18] Add Fiber's guard page in Posix as well
 
 Windows Fiber implementation already uses the fiber stack guard page.
 This brings the similar protection for mmaped fiber stacks, using
@@ -194,5 +194,5 @@ index 75864fb9..c9f87f38 100644
  
          Thread.add( m_ctxt );
 -- 
-2.13.2
+2.14.1
 

@@ -1,7 +1,7 @@
-From 803dfeb2315ef005c8de1d6e6f1d6d645e7aa28c Mon Sep 17 00:00:00 2001
+From 7268c1665cee6af3d9432e673c25fb651fe8a05c Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Tue, 4 Apr 2017 15:27:57 +0200
-Subject: [PATCH 15/17] Add eventfd bindings
+Subject: [PATCH 15/18] Add eventfd bindings
 
 This adds bindings for linux-specific eventfd_* calls.
 
@@ -146,5 +146,5 @@ index bbe17903..97d0fd2f 100644
  	copy $** $@
  
 -- 
-2.13.2
+2.14.1
 

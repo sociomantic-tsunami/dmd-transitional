@@ -1,7 +1,7 @@
-From 41ad23ed59863f37120318ca0811611aca18482d Mon Sep 17 00:00:00 2001
+From c70d7d3f38d686a3e9d625b5fe1b29a1dde03610 Mon Sep 17 00:00:00 2001
 From: Nemanja Boric <nemanja.boric@sociomantic.com>
 Date: Tue, 29 Nov 2016 10:37:13 +0100
-Subject: [PATCH 07/17] Add Linux-specific sched_setaffinity and
+Subject: [PATCH 07/18] Add Linux-specific sched_setaffinity and
  sched_getaffinity
 
 ---
@@ -139,5 +139,5 @@ index b9d4a649..b6875a40 100644
  	copy $** $@
  
 -- 
-2.13.2
+2.14.1
 
