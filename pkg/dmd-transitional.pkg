@@ -2,8 +2,8 @@ compiler = 'dmd/src/dmd'
 runtime = 'druntime/generated/linux/release/64/libdruntime.a'
 runtimedbg = 'druntime/generated/linux/debug/64/libdruntime.a'
 
-OPTS = dict(
-    name = VAR.name,
+OPTS.update(
+    name = VAR.fullname,
     url = 'https://github.com/sociomantic/dlang',
     description = 'Transitional dmd/druntime to help D1/D2 migration',
     category = 'devel',
@@ -12,10 +12,10 @@ OPTS = dict(
     depends = FUN.autodeps(compiler),
 )
 
-ARGS = [
+ARGS.extend([
     '{0}=/usr/bin/{1}'.format(compiler, VAR.name),
     '{0}=/usr/lib/libdruntime.a'.format(runtime),
     '{0}=/usr/lib/libdruntime-dbg.a'.format(runtimedbg),
     'druntime/import/release/=/usr/include/d2/dmd-transitional/',
     'dmd.conf=/etc/dmd-transitional.conf',
-]
+])
