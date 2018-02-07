@@ -1,0 +1,64 @@
+From 8e830e1fc90b19c12b25a1ee6a53a78121133c07 Mon Sep 17 00:00:00 2001
+From: Leandro Lucarella <leandro.lucarella@sociomantic.com>
+Date: Thu, 14 Sep 2017 15:20:16 +0200
+Subject: [PATCH 5/5] Fix issue 17300 - Make coverage reports configurable via
+ --DRT-covopt
+
+The coverage module has a couple of options that can be set through some
+weirdly looking dmd_coverSetMerge(), dmd_coverSourcePath() and
+dmd_coverDestPath() functions (I guess the dmd prefix comes from
+pre-druntime times).
+
+These options don't only use non standard names, they also don't use the
+standard --DRT-xxx / DRT_XXX runtime options passing mechanism, and they
+can only be overridden in code.
+
+This commit plugs the runtime options mechanism and adds support to set
+these options via --DRT-covopt (and matching environment variables),
+providing the sub-options merge, dstpath and srcpath.
+
+The old functions are kept for backwards compatibility (they are used by
+DMD itself for example), but should probably be removed in some distant
+future.
+---
+ src/rt/cover.d | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/rt/cover.d b/src/rt/cover.d
+index 82e0ed05..e96fc3f5 100644
+--- a/src/rt/cover.d
++++ b/src/rt/cover.d
+@@ -24,7 +24,6 @@ private
+     import core.stdc.stdio;
+     import core.stdc.stdlib;
+     import rt.util.utf;
+-    import core.internal.parseoptions;
+ 
+     struct BitArray
+     {
+@@ -71,17 +70,18 @@ private
+ 
+         bool initialize()
+         {
++            import core.internal.parseoptions : initConfigOptions;
+             return initConfigOptions(this, this.errorName);
+         }
+ 
+         void help()
+         {
+-            string s = "Code coverage options are specified as white space separated assignments:
++            string s = "Code coverage options are specified as whitespace separated assignments:
+     merge:0|1      - 0 overwrites existing reports, 1 merges current run with existing coverage reports (default: %d)
+-    dstpath:<PATH> - write code coverage reports to <PATH> (default: current
++    dstpath:<PATH> - writes code coverage reports to <PATH> (default: current
+             working directory)
+-    srcpath:<PATH> - set the path where the source files are located to <PATH>
+-    (defaul: current working directory)
++    srcpath:<PATH> - sets the path where the source files are located to <PATH>
++    (default: current working directory)
+ ";
+             printf(s.ptr, merge);
+         }
+-- 
+2.16.1
+
