@@ -1,0 +1,25 @@
+From b1838ec4d1262723abee0d0aa5ebf48275fed150 Mon Sep 17 00:00:00 2001
+From: Leandro Lucarella <leandro.lucarella@sociomantic.com>
+Date: Tue, 5 Dec 2017 14:13:32 -0300
+Subject: [PATCH] gc/config: Fix typo in help message
+
+---
+ src/gc/config.d | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gc/config.d b/src/gc/config.d
+index c033b666..03b54764 100644
+--- a/src/gc/config.d
++++ b/src/gc/config.d
+@@ -32,7 +32,7 @@ struct Config
+ 
+     void help() @nogc nothrow
+     {
+-        string s = "GC options are specified as white space separated assignments:
++        string s = "GC options are specified as whitespace separated assignments:
+     disable:0|1    - start disabled (%d)
+     profile:0|1|2  - enable profiling with summary when terminating program (%d)
+     precise:0|1    - enable precise scanning (not implemented yet)
+-- 
+2.16.1
+
