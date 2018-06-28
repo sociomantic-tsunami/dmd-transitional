@@ -8,7 +8,7 @@ OPTS = dict(
     description = 'Transitional dmd/druntime to help D1/D2 migration',
     category = 'devel',
     maintainer = 'Sociomantic Tsunami <tsunami@sociomantic.com>',
-    vendor = 'Sociomantic Labs GmbH',
+    vendor = 'dunnhumby Germany GmbH',
     depends = FUN.autodeps(compiler),
 )
 
