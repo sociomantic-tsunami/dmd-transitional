@@ -1,1 +1,1 @@
-FROM sociomantictsunami/base:v4
+FROM sociomantictsunami/base:v5
