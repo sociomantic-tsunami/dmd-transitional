@@ -31,12 +31,12 @@ index 00000000..cc134421
 +/**
 + * D header file for POSIX.
 + *
-+ * Copyright: Copyright Sociomantic Labs GmbH.
++ * Copyright: Copyright dunnhumby Germany GmbH.
 + * License:   $(WEB www.boost.org/LICENSE_1_0.txt, Boost License 1.0).
 + * Authors:   Leandro Lucarella
 + */
 +
-+/*          Copyright Sociomantic Labs GmbH.
++/*          Copyright dunnhumby Germany GmbH.
 + * Distributed under the Boost Software License, Version 1.0.
 + *    (See accompanying file LICENSE or copy at
 + *          http://www.boost.org/LICENSE_1_0.txt)

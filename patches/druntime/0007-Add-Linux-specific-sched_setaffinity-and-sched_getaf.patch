@@ -37,7 +37,7 @@ index 00000000..6dc6e336
 +    Defines functions sched_setaffinity and sched_getaffinity  and the data
 +    types they operate on.
 +
-+    Copyright:  Copyright (c) 2016 Sociomantic Labs. All rights reserved.
++    Copyright:  Copyright (c) 2016 dunnhumby Germany GmbH. All rights reserved.
 +    License:    $(WEB www.boost.org/LICENSE_1_0.txt, Boost License 1.0).
 +    Authors:    Nemanja Boric
 +
