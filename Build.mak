@@ -1,5 +1,5 @@
 # DMD version from which to base the dmd-transtional
-DLANG_BASE_VER := v2.071.2
+DLANG_BASE_VER := v2.078.3
 
 # Generated objects
 objs := dmd/src/dmd \
