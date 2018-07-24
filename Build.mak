@@ -2,7 +2,9 @@
 DLANG_BASE_VER := v2.078.3
 
 # Generated objects
-objs := dmd/src/dmd \
+objs := \
+	dmd/generated/linux/release/64/dmd \
+	dmd/generated/linux/debug/64/dmd \
 	druntime/generated/linux/release/64/libdruntime.a \
 	druntime/generated/linux/debug/64/libdruntime.a
 
@@ -28,8 +30,8 @@ all: $(objs)
 dmd/.git/config: $(dmd_patches)
 	$(call git_clone,dmd)
 
-dmd/src/dmd: dmd/.git/config
-	$(MAKE) -C dmd -f posix.mak MODEL=64 RELEASE=1 AUTO_BOOTSTRAP=1
+dmd/generated/linux/%/64/dmd: dmd/.git/config
+	$(MAKE) -C dmd -f posix.mak MODEL=64 RELEASE=1 BUILD=$* AUTO_BOOTSTRAP=1
 
 # In the case of druntime, the splitting of fetching and building makes even
 # more sense because then we can do both buildings in parallel with -j

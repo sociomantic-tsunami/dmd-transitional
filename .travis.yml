@@ -22,7 +22,7 @@ env:
 
 install: beaver install
 
-script: beaver make all pkg
+script: beaver make -j1 all pkg
 
 deploy:
     provider: script
