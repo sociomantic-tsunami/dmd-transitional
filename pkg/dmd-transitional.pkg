@@ -1,3 +1,5 @@
+import subprocess
+
 compiler = 'dmd/generated/linux/debug/64/dmd'
 runtime = 'druntime/generated/linux/release/64/libdruntime.a'
 runtimedbg = 'druntime/generated/linux/debug/64/libdruntime.a'
@@ -10,6 +12,11 @@ OPTS.update(
     maintainer = 'Sociomantic Tsunami <tsunami@sociomantic.com>',
     vendor = 'dunnhumby Germany GmbH',
     depends = FUN.autodeps(compiler),
+    version = subprocess
+        .run(['git', 'describe'], stdout=subprocess.PIPE)
+        .stdout
+        .decode('utf-8')
+        .strip(),
 )
 
 ARGS.extend([
