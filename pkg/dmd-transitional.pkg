@@ -14,7 +14,7 @@ OPTS.update(
     depends = FUN.autodeps(compiler),
     version = subprocess
         .run(['git', 'describe'], stdout=subprocess.PIPE)
-        .stdout
+        .stdout[1:]
         .decode('utf-8')
         .strip(),
 )
