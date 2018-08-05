@@ -1,0 +1,163 @@
+From 399a8f26d169360a5c7fa9091d074977875c5d01 Mon Sep 17 00:00:00 2001
+From: Mihails Strasuns <mihails.strasuns@gmail.com>
+Date: Sun, 5 Aug 2018 18:03:24 +0300
+Subject: [PATCH 4/4] Add temproary GC.monitor implementation
+
+Mimicks D1 tangort implementation in sociomantic-tsunami/tangort
+
+Intended as a temporary hack to continue with transition while
+apropriate long-term solution is being worked on with upstream.
+
+Fixes #31
+---
+ src/core/memory.d             | 19 +++++++++++++++++++
+ src/gc/gcinterface.d          |  5 +++++
+ src/gc/impl/conservative/gc.d | 22 +++++++++++++++++++++-
+ src/gc/impl/manual/gc.d       |  4 ++++
+ src/gc/proxy.d                |  5 +++++
+ 5 files changed, 54 insertions(+), 1 deletion(-)
+
+diff --git a/src/core/memory.d b/src/core/memory.d
+index 67148b4..3a8ad96 100644
+--- a/src/core/memory.d
++++ b/src/core/memory.d
+@@ -148,6 +148,10 @@ private
+     extern (C) void gc_runFinalizers( in void[] segment );
+ 
+     package extern (C) bool gc_inFinalizer();
++
++    alias extern(D) void delegate() begin_del;
++    alias extern(D) void delegate(size_t, size_t) end_del;
++    extern (C) void gc_monitor(begin_del begin, end_del end);
+ }
+ 
+ 
+@@ -808,6 +812,21 @@ struct GC
+     {
+         gc_runFinalizers( segment );
+     }
++
++    /**
++     * Provides delegates for the GC to call upon collection. If one is not
++     * interested in an event, null can be provided.
++     *
++     * Params:
++     *  begin = An argument-less delegate to call each time a collection starts.
++     *  end = A delegate to call upon completion of the collection.
++     *        The first argument is the number of bytes freed overall,
++     *        the second the number of bytes freed within full pages.
++     */
++    static void monitor( begin_del begin, end_del end )
++    {
++        gc_monitor( begin, end );
++    }
+ }
+ 
+ /**
+diff --git a/src/gc/gcinterface.d b/src/gc/gcinterface.d
+index 19dd90d..8f4f0bf 100644
+--- a/src/gc/gcinterface.d
++++ b/src/gc/gcinterface.d
+@@ -35,6 +35,9 @@ struct Range
+     alias pbot this; // only consider pbot for relative ordering (opCmp)
+ }
+ 
++alias extern(D) nothrow void delegate() begin_del;
++alias extern(D) nothrow void delegate(size_t, size_t) end_del;
++
+ interface GC
+ {
+ 
+@@ -187,4 +190,6 @@ interface GC
+      *
+      */
+     bool inFinalizer() nothrow;
++
++    void monitor(begin_del begin, end_del end);
+ }
+diff --git a/src/gc/impl/conservative/gc.d b/src/gc/impl/conservative/gc.d
+index 448464d..f8a0867 100644
+--- a/src/gc/impl/conservative/gc.d
++++ b/src/gc/impl/conservative/gc.d
+@@ -1228,6 +1228,17 @@ class ConservativeGC : GC
+         stats.usedSize -= freeListSize;
+         stats.freeSize += freeListSize;
+     }
++
++    void monitor(begin_del begin, end_del end)
++    {
++        return runLocked!(monitorNoSync)(begin, end);
++    }
++
++    private void monitorNoSync(begin_del begin, end_del end)
++    {
++        this.gcx.collection_start_cb = begin;
++        this.gcx.collection_end_cb = end;
++    }
+ }
+ 
+ 
+@@ -1305,6 +1316,9 @@ struct Gcx
+     // total number of mapped pages
+     uint mappedPages;
+ 
++    begin_del collection_start_cb;
++    end_del collection_end_cb;
++
+     void initialize()
+     {
+         (cast(byte*)&this)[0 .. Gcx.sizeof] = 0;
+@@ -2391,6 +2405,9 @@ struct Gcx
+             begin = start = currTime;
+         }
+ 
++        if (this.collection_start_cb !is null)
++            this.collection_start_cb();
++
+         debug(COLLECT_PRINTF) printf("Gcx.fullcollect()\n");
+         //printf("\tpool address range = %p .. %p\n", minAddr, maxAddr);
+ 
+@@ -2456,7 +2473,10 @@ struct Gcx
+ 
+         updateCollectThresholds();
+ 
+-        return freedLargePages + freedSmallPages;
++        auto freed = freedLargePages + freedSmallPages;
++        if (this.collection_end_cb !is null)
++            this.collection_end_cb(freed * PAGESIZE, freed * PAGESIZE);
++        return freed;
+     }
+ 
+     /**
+diff --git a/src/gc/impl/manual/gc.d b/src/gc/impl/manual/gc.d
+index 7cc5bf5..f7755a4 100644
+--- a/src/gc/impl/manual/gc.d
++++ b/src/gc/impl/manual/gc.d
+@@ -271,4 +271,8 @@ class ManualGC : GC
+     {
+         return false;
+     }
++
++    void monitor(begin_del begin, end_del end)
++    {
++    }
+ }
+diff --git a/src/gc/proxy.d b/src/gc/proxy.d
+index c86cc78..0177a5a 100644
+--- a/src/gc/proxy.d
++++ b/src/gc/proxy.d
+@@ -197,6 +197,11 @@ extern (C)
+         return instance.inFinalizer();
+     }
+ 
++    void gc_monitor(begin_del begin, end_del end)
++    {
++        return instance.monitor(begin, end);
++    }
++
+     GC gc_getProxy() nothrow
+     {
+         return instance;
+-- 
+2.17.1
+
