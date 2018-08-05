@@ -1,0 +1,46 @@
+From 1d61be312900061c37cbad4a2c5fae8387e32f81 Mon Sep 17 00:00:00 2001
+From: JinShil <slavo5150@yahoo.com>
+Date: Fri, 23 Mar 2018 20:34:29 +0900
+Subject: [PATCH 2/2] Fix Issue 18645 - DMD segmentation fault (Enum
+ Initialization)
+
+---
+ src/dmd/dsymbolsem.d        | 5 ++++-
+ test/compilable/test18645.d | 9 +++++++++
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+ create mode 100644 test/compilable/test18645.d
+
+diff --git a/src/dmd/dsymbolsem.d b/src/dmd/dsymbolsem.d
+index 5f54230bf..b521990da 100644
+--- a/src/dmd/dsymbolsem.d
++++ b/src/dmd/dsymbolsem.d
+@@ -3616,7 +3616,10 @@ private extern(C++) final class DsymbolSemanticVisitor : Visitor
+                 return errorReturn();
+ 
+             Expression eprev = emprev.value;
+-            Type tprev = eprev.type.equals(em.ed.type) ? em.ed.memtype : eprev.type;
++            // .toHeadMutable() due to https://issues.dlang.org/show_bug.cgi?id=18645
++            Type tprev = eprev.type.toHeadMutable().equals(em.ed.type.toHeadMutable())
++                ? em.ed.memtype
++                : eprev.type;
+ 
+             Expression emax = tprev.getProperty(em.ed.loc, Id.max, 0);
+             emax = emax.expressionSemantic(sc);
+diff --git a/test/compilable/test18645.d b/test/compilable/test18645.d
+new file mode 100644
+index 000000000..acb55863f
+--- /dev/null
++++ b/test/compilable/test18645.d
+@@ -0,0 +1,9 @@
++// https://issues.dlang.org/show_bug.cgi?id=18645
++
++immutable INIT = 42;
++
++enum A
++{
++    x = INIT,
++    y
++}
+-- 
+2.17.1
+
