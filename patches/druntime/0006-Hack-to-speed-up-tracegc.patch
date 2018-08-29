@@ -1,0 +1,114 @@
+From e7630e9a97ec69658f61cf191ce0a5ef781ce494 Mon Sep 17 00:00:00 2001
+From: Mihails Strasuns <mihails.strasuns.contractor@sociomantic.com>
+Date: Wed, 29 Aug 2018 11:27:11 +0000
+Subject: [PATCH 6/6] Hack to speed up tracegc
+
+---
+ src/core/memory.d             | 6 ++++++
+ src/gc/gcinterface.d          | 1 +
+ src/gc/impl/conservative/gc.d | 5 +++++
+ src/gc/impl/manual/gc.d       | 5 +++++
+ src/gc/proxy.d                | 5 +++++
+ src/rt/tracegc.d              | 2 +-
+ 6 files changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/src/core/memory.d b/src/core/memory.d
+index 5e2c5cc..07f59aa 100644
+--- a/src/core/memory.d
++++ b/src/core/memory.d
+@@ -140,6 +140,7 @@ private
+     extern (C) BlkInfo_ gc_query( void* p ) pure nothrow;
+     extern (C) GC.Stats gc_stats ( ) nothrow @nogc;
+     extern (C) void gc_resetThreadLocalStats() nothrow @nogc;
++    extern (C) size_t gc_getThreadLocalStats() nothrow @nogc;
+ 
+     extern (C) void gc_addRoot( in void* p ) nothrow @nogc;
+     extern (C) void gc_addRange( in void* p, size_t sz, const TypeInfo ti = null ) nothrow @nogc;
+@@ -695,6 +696,11 @@ struct GC
+         gc_resetThreadLocalStats();
+     }
+ 
++    static size_t getThreadLocalStats() nothrow
++    {
++        return gc_getThreadLocalStats();
++    }
++
+     /**
+      * Adds an internal root pointing to the GC memory block referenced by p.
+      * As a result, the block referenced by p itself and any blocks accessible
+diff --git a/src/gc/gcinterface.d b/src/gc/gcinterface.d
+index 14083cb..ec4928e 100644
+--- a/src/gc/gcinterface.d
++++ b/src/gc/gcinterface.d
+@@ -195,6 +195,7 @@ interface GC
+      *
+      */
+     void resetThreadLocalStats() nothrow @nogc;
++    size_t getThreadLocalStats() nothrow @nogc;
+ 
+     void monitor(begin_del begin, end_del end);
+ }
+diff --git a/src/gc/impl/conservative/gc.d b/src/gc/impl/conservative/gc.d
+index e7d92bd..91f7334 100644
+--- a/src/gc/impl/conservative/gc.d
++++ b/src/gc/impl/conservative/gc.d
+@@ -1235,6 +1235,11 @@ class ConservativeGC : GC
+         stats.allocatedInCurrentThread = .bytesAllocated;
+     }
+ 
++    size_t getThreadLocalStats() nothrow @nogc
++    {
++        return .bytesAllocated;
++    }
++
+     void resetThreadLocalStats() nothrow @nogc
+     {
+         .bytesAllocated = 0;
+diff --git a/src/gc/impl/manual/gc.d b/src/gc/impl/manual/gc.d
+index bd902c2..44d61b5 100644
+--- a/src/gc/impl/manual/gc.d
++++ b/src/gc/impl/manual/gc.d
+@@ -276,6 +276,11 @@ class ManualGC : GC
+     {
+     }
+ 
++    size_t getThreadLocalStats() nothrow @nogc
++    {
++        return 0;
++    }
++
+     void monitor(begin_del begin, end_del end)
+     {
+     }
+diff --git a/src/gc/proxy.d b/src/gc/proxy.d
+index 8ca9063..f3d0274 100644
+--- a/src/gc/proxy.d
++++ b/src/gc/proxy.d
+@@ -202,6 +202,11 @@ extern (C)
+         return instance.resetThreadLocalStats();
+     }
+ 
++    size_t gc_getThreadLocalStats() nothrow @nogc
++    {
++        return instance.getThreadLocalStats();
++    }
++
+     void gc_monitor(begin_del begin, end_del end)
+     {
+         return instance.monitor(begin, end);
+diff --git a/src/rt/tracegc.d b/src/rt/tracegc.d
+index 2c7041a..7f3e544 100644
+--- a/src/rt/tracegc.d
++++ b/src/rt/tracegc.d
+@@ -82,7 +82,7 @@ enum accumulator = q{
+ 
+     scope(exit)
+     {
+-        size_t size = GC.stats().allocatedInCurrentThread;
++        size_t size = GC.getThreadLocalStats();
+         if (size > 0)
+             accumulate(file, line, funcname, name, size);
+     }
+-- 
+2.7.4
+
