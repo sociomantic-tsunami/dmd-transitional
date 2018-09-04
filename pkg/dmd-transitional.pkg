@@ -1,6 +1,6 @@
 import subprocess
 
-compiler = 'dmd/generated/linux/debug/64/dmd'
+compiler = 'dmd/generated/linux/release/64/dmd'
 runtime = 'druntime/generated/linux/release/64/libdruntime.a'
 runtimedbg = 'druntime/generated/linux/debug/64/libdruntime.a'
 
