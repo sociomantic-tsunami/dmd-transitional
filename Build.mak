@@ -18,7 +18,7 @@ SRC := .
 # Function to checkout code ($1 is the project to checkout)
 define git_clone
 $(RM) -r $1
-git clone --depth 1 --branch "$(DLANG_BASE_VER)" "https://github.com/dlang/$1.git"
+git clone -c protocol.version=1 --depth 1 --branch "$(DLANG_BASE_VER)" "https://github.com/dlang/$1.git"
 git -C $1 am $(addprefix ../,$($(1)_patches))
 endef
 
