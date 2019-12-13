@@ -1,0 +1,84 @@
+From f9ed34003d9b0f533a37850540b02929586e7a76 Mon Sep 17 00:00:00 2001
+From: Walter Bright <walter@walterbright.com>
+Date: Sun, 18 Mar 2018 21:28:53 -0700
+Subject: [PATCH] fix Issue 18534 - Wrong code for ?: operator when compiling
+ with -O
+
+---
+ src/dmd/backend/cod2.c    | 20 +++++++++++++++-----
+ test/runnable/test18534.d | 18 ++++++++++++++++++
+ 2 files changed, 33 insertions(+), 5 deletions(-)
+ create mode 100644 test/runnable/test18534.d
+
+diff --git a/src/dmd/backend/cod2.c b/src/dmd/backend/cod2.c
+index 1b8abefac..6a8cdd33c 100644
+--- a/src/dmd/backend/cod2.c
++++ b/src/dmd/backend/cod2.c
+@@ -1998,9 +1998,19 @@ void cdcond(CodeBuilder& cdb,elem *e,regm_t *pretregs)
+         targ_size_t v1,v2;
+         int opcode;
+ 
+-        retregs = *pretregs & (ALLREGS | mBP);
+-        if (!retregs)
+-            retregs = ALLREGS;
++        if (sz2 != 1 || I64)
++        {
++            retregs = *pretregs & (ALLREGS | mBP);
++            if (!retregs)
++                retregs = ALLREGS;
++        }
++        else
++        {
++            retregs = *pretregs & BYTEREGS;
++            if (!retregs)
++                retregs = BYTEREGS;
++        }
++
+         cdcmp_flag = 1;
+         v1 = e21->EV.Vllong;
+         v2 = e22->EV.Vllong;
+@@ -2046,7 +2056,7 @@ void cdcond(CodeBuilder& cdb,elem *e,regm_t *pretregs)
+             {
+                 v1 -= v2;
+                 cdb.genc2(opcode,grex | modregrmx(3,4,reg),v1);   // AND reg,v1-v2
+-                if (I64 && sz1 == 1 && reg >= 4)
++                if (I64 && sz2 == 1 && reg >= 4)
+                     code_orrex(cdb.last(), REX);
+                 if (v2 == 1 && !I64)
+                     cdb.gen1(0x40 + reg);                     // INC reg
+@@ -2054,7 +2064,7 @@ void cdcond(CodeBuilder& cdb,elem *e,regm_t *pretregs)
+                     cdb.gen1(0x48 + reg);                     // DEC reg
+                 else
+                 {   cdb.genc2(opcode,grex | modregrmx(3,0,reg),v2);   // ADD reg,v2
+-                    if (I64 && sz1 == 1 && reg >= 4)
++                    if (I64 && sz2 == 1 && reg >= 4)
+                         code_orrex(cdb.last(), REX);
+                 }
+             }
+diff --git a/test/runnable/test18534.d b/test/runnable/test18534.d
+new file mode 100644
+index 000000000..8d4653dec
+--- /dev/null
++++ b/test/runnable/test18534.d
+@@ -0,0 +1,18 @@
++/* REQUIRED_ARGS: -O
++ * PERMUTE_ARGS:
++ */
++
++// https://issues.dlang.org/show_bug.cgi?id=18534
++
++auto blah(char ch) { return ch; }
++
++auto foo(int i)
++{
++    return blah(i ? 'A' : 'A');
++}
++
++void main()
++{
++    auto c = foo(0);
++    assert(c == 'A');
++}
+-- 
+2.17.1
+
