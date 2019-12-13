@@ -1,0 +1,58 @@
+From a4bc86ce3a0c4122fe27c84ae801c42f1c8edeef Mon Sep 17 00:00:00 2001
+From: Walter Bright <walter@walterbright.com>
+Date: Fri, 13 Dec 2019 00:54:42 -0800
+Subject: [PATCH] fix Issue 20441 - Wrong code with -O -fPIC and pointer
+ subtraction
+
+---
+ src/dmd/backend/cod2.d  |  2 ++
+ test/runnable/testpic.d | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/src/dmd/backend/cod2.d b/src/dmd/backend/cod2.d
+index 0ef56d93e..76d01d448 100644
+--- a/src/dmd/backend/cod2.d
++++ b/src/dmd/backend/cod2.d
+@@ -715,6 +715,8 @@ void cdorth(ref CodeBuilder cdb,elem *e,regm_t *pretregs)
+             break;
+ 
+         case OPrelconst:
++            if (I64 && (config.flags3 & CFG3pic || config.exe == EX_WIN64))
++                goto default;
+             if (sz != REGSIZE)
+                 goto L2;
+             if (segfl[el_fl(e2)] != 3)              /* if not in data segment */
+diff --git a/test/runnable/testpic.d b/test/runnable/testpic.d
+index 4bab07612..ef3ab8667 100644
+--- a/test/runnable/testpic.d
++++ b/test/runnable/testpic.d
+@@ -45,10 +45,26 @@ void test17034()
+ 
+ /***************************************************/
+ 
++// https://issues.dlang.org/show_bug.cgi?id=20441
++
++const(char)* moo(const (char) *s)
++{
++    return s;
++}
++
++void test20441()
++{
++    const(char) *x = "abc".ptr;
++    assert( moo(x) - x == 0 );
++}
++
++/***************************************************/
++
+ int main()
+ {
+     test11310();
+     test17034();
++    test20441();
+ 
+     printf("Success\n");
+     return 0;
+-- 
+2.17.1
+
