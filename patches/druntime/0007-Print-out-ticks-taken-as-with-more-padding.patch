@@ -1,0 +1,46 @@
+From 0fc4b3e9e23618412f8f7ced13adadd502da307f Mon Sep 17 00:00:00 2001
+From: Stefan Koch <stefan.koch@sociomantic.com>
+Date: Fri, 26 Apr 2019 18:18:27 +0200
+Subject: [PATCH 15/15] Fix profile to report cycles
+
+---
+ src/rt/trace.d | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/rt/trace.d b/src/rt/trace.d
+index 07fd333..1695292 100644
+--- a/src/rt/trace.d
++++ b/src/rt/trace.d
+@@ -292,9 +292,9 @@ private void trace_times(FILE* fplog, Symbol*[] psymbols)
+     // Print array
+     timer_t freq;
+     QueryPerformanceFrequency(&freq);
+-    fprintf(fplog,"\n======== Timer Is %lld Ticks/Sec, Times are in Microsecs ========\n\n",freq);
+-    fprintf(fplog,"  Num          Tree        Func        Per\n");
+-    fprintf(fplog,"  Calls        Time        Time        Call\n\n");
++    fprintf(fplog,"\n======== Timings are in raw TSC Ticks ========\n\n",freq);
++    fprintf(fplog,"     Num              Tree                 Func                   Per\n");
++    fprintf(fplog,"     Calls            Time                 Time                   Call\n\n");
+     foreach (s; psymbols)
+     {
+         timer_t tl,tr;
+@@ -313,12 +313,12 @@ private void trace_times(FILE* fplog, Symbol*[] psymbols)
+         if (calls == 0)
+             calls = 1;
+ 
+-        tl = (s.totaltime * 1000000) / freq;
+-        fl = (s.functime  * 1000000) / freq;
++        tl = s.totaltime;
++        fl = s.functime;
+         percall = s.functime / calls;
+-        pl = (s.functime * 1000000) / calls / freq;
++        pl = s.functime / calls;
+ 
+-        fprintf(fplog,"%7llu%12lld%12lld%12lld     %.*s\n",
++        fprintf(fplog,"%10llu %20lld %20lld %20lld     %.*s\n",
+                       calls, tl, fl, pl, id.length, id.ptr);
+     }
+ }
+-- 
+2.7.4
+
